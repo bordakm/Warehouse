@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +10,15 @@ using Warehouse.Models;
 
 namespace Warehouse
 {
-    public class WarehouseContext : DbContext
+    public class WarehouseContext : ApiAuthorizationDbContext<Employee>
     {
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer();
         //}
 
-        public WarehouseContext(DbContextOptions options)
-            :base(options)
+        public WarehouseContext(DbContextOptions options,
+            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
             
         }
