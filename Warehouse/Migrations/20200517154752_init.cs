@@ -214,6 +214,7 @@ namespace Warehouse.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     ContainerId = table.Column<int>(nullable: false),
                     Count = table.Column<int>(nullable: false)
                 },
@@ -231,7 +232,7 @@ namespace Warehouse.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "5e653f41-5e9a-45d5-98f7-317311881b5f", 0, "7a795532-c465-4ea4-b52f-b45c380010e7", "A1alma@alma.hu", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==", null, false, "8c3fc9b5-910f-4c25-b3cb-2ee0353dc58a", false, null });
+                values: new object[] { "f77fc85d-967a-4957-876e-0b6eed755efd", 0, "5a681def-42a1-43b2-891d-6922de991a07", "A1alma@alma.hu", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==", null, false, "2885e31a-a69e-42a4-a421-23a82f051503", false, null });
 
             migrationBuilder.InsertData(
                 table: "Containers",
@@ -240,8 +241,8 @@ namespace Warehouse.Migrations
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "ContainerId", "Count", "Name" },
-                values: new object[] { 1, 1, 4, "Csavarhúzó" });
+                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
+                values: new object[] { 1, 1, 4, null, "Csavarhúzó" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

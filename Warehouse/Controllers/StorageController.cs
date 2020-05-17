@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Warehouse;
+using Warehouse.Controllers.DTO;
 using Warehouse.Entities;
 using Warehouse.Services;
 
@@ -24,29 +25,21 @@ namespace Warehouse.Controllers
             this.itemService = itemService;
         }
 
-        // GET: api/Items
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetItems()
+        public ActionResult<IEnumerable<ListItem>> GetItems([FromQuery(Name = "search")]string searchTerm)
         {
-            // return await _context.Items.ToListAsync();
-            var items = itemService.GetAllItems();
-            return Ok(items);
+            if (searchTerm == null)            
+                return Ok(itemService.GetAllItems().Select(i => ToListItem(i)));               
+            else
+                return Ok(itemService.SearchItems(searchTerm).Select(ToListItem));
         }
 
-        // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
+        [HttpPost]
+        public ActionResult<AddedItem> AddItem([FromBody]AddedItem addedItem)
         {
-            var item = await _context.Items.FindAsync(id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return item;
+            return itemService.AddItem(addedItem);
         }
-
+        /*
         // PUT: api/Items/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -111,5 +104,23 @@ namespace Warehouse.Controllers
         {
             return _context.Items.Any(e => e.Id == id);
         }
+        */
+
+
+
+
+
+
+        private ListItem ToListItem(Item item)
+        {
+            return new ListItem
+            {
+                Name = item.Name,
+                Description = item.Description,
+                Count = item.Count,
+                ContainerName = item.Container.Name
+            };
+        }
+
     }
 }

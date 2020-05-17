@@ -78,7 +78,7 @@ namespace Warehouse
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -128,14 +128,14 @@ namespace Warehouse
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            CreateRoles(serviceProvider).Wait();
         }
-        /*
+        
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
-            //initializing custom roles 
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<Employee>>();
-            string[] roleNames = { "Admin", "Manager", "Member" };
+            string[] roleNames = { "Admin", "ViewStorage", "EditStorage" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
@@ -143,33 +143,27 @@ namespace Warehouse
                 var roleExist = await RoleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    //create the roles and seed them to the database: Question 1
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-
-            //Here you could create a super user who will maintain the web app
+            string email = "admin@admin.hu";
+            string password = "admin";
             var poweruser = new Employee
             {
-
-                UserName = Configuration["AppSettings:UserName"],
-                Email = Configuration["AppSettings:UserEmail"],
+                UserName = email,
+                Email = email
             };
-            //Ensure you have these values in your appsettings.json file
-            string userPWD = Configuration["AppSettings:UserPassword"];
-            var _user = await UserManager.FindByEmailAsync(Configuration["AppSettings:AdminUserEmail"]);
-
+            string userPWD = password;
+            var _user = await UserManager.FindByEmailAsync(email);
             if (_user == null)
             {
                 var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD);
                 if (createPowerUser.Succeeded)
                 {
-                    //here we tie the new user to the role
                     await UserManager.AddToRoleAsync(poweruser, "Admin");
-
                 }
             }
-        }*/
+        }
 
     }
 }

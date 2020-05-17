@@ -333,15 +333,15 @@ namespace Warehouse.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5e653f41-5e9a-45d5-98f7-317311881b5f",
+                            Id = "f77fc85d-967a-4957-876e-0b6eed755efd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7a795532-c465-4ea4-b52f-b45c380010e7",
+                            ConcurrencyStamp = "5a681def-42a1-43b2-891d-6922de991a07",
                             Email = "A1alma@alma.hu",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8c3fc9b5-910f-4c25-b3cb-2ee0353dc58a",
+                            SecurityStamp = "2885e31a-a69e-42a4-a421-23a82f051503",
                             TwoFactorEnabled = false
                         });
                 });
@@ -358,6 +358,9 @@ namespace Warehouse.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
