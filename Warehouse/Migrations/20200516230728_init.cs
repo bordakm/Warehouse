@@ -39,24 +39,12 @@ namespace Warehouse.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FullName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Containers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Containers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,6 +188,26 @@ namespace Warehouse.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Containers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    LastEmployeeId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Containers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Containers_AspNetUsers_LastEmployeeId",
+                        column: x => x.LastEmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -207,7 +215,7 @@ namespace Warehouse.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     ContainerId = table.Column<int>(nullable: false),
-                    Number = table.Column<int>(nullable: false)
+                    Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,14 +229,19 @@ namespace Warehouse.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "5e653f41-5e9a-45d5-98f7-317311881b5f", 0, "7a795532-c465-4ea4-b52f-b45c380010e7", "A1alma@alma.hu", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==", null, false, "8c3fc9b5-910f-4c25-b3cb-2ee0353dc58a", false, null });
+
+            migrationBuilder.InsertData(
                 table: "Containers",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "T1" });
+                columns: new[] { "Id", "LastEmployeeId", "Name" },
+                values: new object[] { 1, null, "T1" });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "ContainerId", "Name", "Number" },
-                values: new object[] { 1, 1, "Csavarhúzó", 3 });
+                columns: new[] { "Id", "ContainerId", "Count", "Name" },
+                values: new object[] { 1, 1, 4, "Csavarhúzó" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -268,6 +281,11 @@ namespace Warehouse.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Containers_LastEmployeeId",
+                table: "Containers",
+                column: "LastEmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
@@ -326,10 +344,10 @@ namespace Warehouse.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Containers");
 
             migrationBuilder.DropTable(
-                name: "Containers");
+                name: "AspNetUsers");
         }
     }
 }

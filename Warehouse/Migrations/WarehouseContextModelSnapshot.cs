@@ -236,17 +236,22 @@ namespace Warehouse.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Warehouse.Models.Container", b =>
+            modelBuilder.Entity("Warehouse.Entities.Container", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("LastEmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LastEmployeeId");
 
                     b.ToTable("Containers");
 
@@ -258,7 +263,7 @@ namespace Warehouse.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Warehouse.Models.Employee", b =>
+            modelBuilder.Entity("Warehouse.Entities.Employee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -276,6 +281,9 @@ namespace Warehouse.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -321,9 +329,24 @@ namespace Warehouse.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "5e653f41-5e9a-45d5-98f7-317311881b5f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7a795532-c465-4ea4-b52f-b45c380010e7",
+                            Email = "A1alma@alma.hu",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8c3fc9b5-910f-4c25-b3cb-2ee0353dc58a",
+                            TwoFactorEnabled = false
+                        });
                 });
 
-            modelBuilder.Entity("Warehouse.Models.Item", b =>
+            modelBuilder.Entity("Warehouse.Entities.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,11 +356,11 @@ namespace Warehouse.Migrations
                     b.Property<int>("ContainerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -350,8 +373,8 @@ namespace Warehouse.Migrations
                         {
                             Id = 1,
                             ContainerId = 1,
-                            Name = "Csavarhúzó",
-                            Number = 3
+                            Count = 4,
+                            Name = "Csavarhúzó"
                         });
                 });
 
@@ -366,7 +389,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Warehouse.Models.Employee", null)
+                    b.HasOne("Warehouse.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,7 +398,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Warehouse.Models.Employee", null)
+                    b.HasOne("Warehouse.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -390,7 +413,7 @@ namespace Warehouse.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Warehouse.Models.Employee", null)
+                    b.HasOne("Warehouse.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,16 +422,23 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Warehouse.Models.Employee", null)
+                    b.HasOne("Warehouse.Entities.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Warehouse.Models.Item", b =>
+            modelBuilder.Entity("Warehouse.Entities.Container", b =>
                 {
-                    b.HasOne("Warehouse.Models.Container", "Container")
+                    b.HasOne("Warehouse.Entities.Employee", "LastEmployee")
+                        .WithMany()
+                        .HasForeignKey("LastEmployeeId");
+                });
+
+            modelBuilder.Entity("Warehouse.Entities.Item", b =>
+                {
+                    b.HasOne("Warehouse.Entities.Container", "Container")
                         .WithMany("Items")
                         .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade)

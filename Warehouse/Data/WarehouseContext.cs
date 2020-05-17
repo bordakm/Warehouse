@@ -6,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Warehouse.Models;
+using Warehouse.Data;
+using Warehouse.Entities;
 
 namespace Warehouse
 {
@@ -17,6 +18,10 @@ namespace Warehouse
         //    optionsBuilder.UseSqlServer();
         //}
 
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Container> Containers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
         public WarehouseContext(DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
@@ -26,13 +31,7 @@ namespace Warehouse
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Container>().HasData(new Container() { Id = 1, Name = "T1"});
-            modelBuilder.Entity<Item>().HasData(new Item() { Id = 1, Name = "Csavarhúzó", Number = 3, ContainerId = 1});
+            modelBuilder.SeedDatabase();
         }
-
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Container> Containers { get; set; }
-
-
     }
 }
