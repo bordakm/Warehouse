@@ -206,3 +206,10 @@ C:\Users\Mate\source\repos\Warehouse\Warehouse\bin\Debug\netcoreapp3.1\runtimes\
 C:\Users\Mate\source\repos\Warehouse\Warehouse\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\Mate\source\repos\Warehouse\Warehouse\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\Mate\source\repos\Warehouse\Warehouse\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Pages\Shared\_Layout.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Mate\source\repos\Warehouse\Warehouse\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
