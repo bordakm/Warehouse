@@ -38,7 +38,7 @@ namespace Warehouse
             /*services.AddSingleton<ItemService, IItemService>();
             services.AddScoped<ItemService, IItemService>();*/
             //services.AddSingleton(typeof(IItemService), typeof(ItemService));
-            services.AddScoped(typeof(IItemService), typeof(ItemService));
+            services.AddScoped(typeof(IStorageService), typeof(StorageService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
 
             // Register the Swagger generator, defining 1 or more Swagger documents

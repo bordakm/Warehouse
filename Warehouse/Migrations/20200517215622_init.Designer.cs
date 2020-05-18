@@ -10,7 +10,7 @@ using Warehouse;
 namespace Warehouse.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20200517154752_init")]
+    [Migration("20200517215622_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,6 +262,16 @@ namespace Warehouse.Migrations
                         {
                             Id = 1,
                             Name = "T1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "T2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "T3"
                         });
                 });
 
@@ -331,21 +341,6 @@ namespace Warehouse.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "f77fc85d-967a-4957-876e-0b6eed755efd",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a681def-42a1-43b2-891d-6922de991a07",
-                            Email = "A1alma@alma.hu",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "2885e31a-a69e-42a4-a421-23a82f051503",
-                            TwoFactorEnabled = false
-                        });
                 });
 
             modelBuilder.Entity("Warehouse.Entities.Item", b =>
@@ -379,7 +374,32 @@ namespace Warehouse.Migrations
                             Id = 1,
                             ContainerId = 1,
                             Count = 4,
+                            Description = "akkumulátoros",
+                            Name = "Fúrógép"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContainerId = 1,
+                            Count = 4,
+                            Description = "kereszthornyos",
                             Name = "Csavarhúzó"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ContainerId = 2,
+                            Count = 4,
+                            Description = "100 méter hosszú, fekete",
+                            Name = "Ethernet kábel"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ContainerId = 3,
+                            Count = 100,
+                            Description = "8mm",
+                            Name = "Csavarok"
                         });
                 });
 

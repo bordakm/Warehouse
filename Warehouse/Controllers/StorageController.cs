@@ -17,28 +17,79 @@ namespace Warehouse.Controllers
     public class StorageController : ControllerBase
     {
         private readonly WarehouseContext _context;
-        private readonly IItemService itemService;
+        private readonly IStorageService storageService;
 
-        public StorageController(WarehouseContext context, IItemService itemService)
+        public StorageController(WarehouseContext context, IStorageService itemService)
         {
             _context = context;
-            this.itemService = itemService;
+            this.storageService = itemService;
         }
 
-        [HttpGet]
+        [HttpGet("items")]
         public ActionResult<IEnumerable<ListItem>> GetItems([FromQuery(Name = "search")]string searchTerm)
         {
             if (searchTerm == null)            
-                return Ok(itemService.GetAllItems().Select(i => ToListItem(i)));               
+                return Ok(storageService.GetAllItems().Select(ToListItem));               
             else
-                return Ok(itemService.SearchItems(searchTerm).Select(ToListItem));
+                return Ok(storageService.SearchItems(searchTerm).Select(ToListItem));
         }
 
-        [HttpPost]
-        public ActionResult<AddedItem> AddItem([FromBody]AddedItem addedItem)
+        [HttpGet("items/{id}")]
+        public ActionResult<ModelItem> GetItems(int id)
         {
-            return itemService.AddItem(addedItem);
+            return ToModelItem(storageService.GetItemById(id));
         }
+
+        [HttpPost("items/")]
+        public ActionResult<ModelItem> AddOrUpdateItem([FromBody]ModelItem addedItem)
+        {
+            return ToModelItem(storageService.AddOrUpdateItem(addedItem));
+        }
+
+        [HttpDelete("items/{id}")]
+        public ActionResult<bool> DeleteItem(int id)
+        {
+            return storageService.DeleteItem(id);
+        }
+
+
+
+        [HttpGet("containers")]
+        public ActionResult<IEnumerable<ListContainer>> GetContainers()
+        {
+            return Ok(storageService.GetAllContainers().Select(ToListContainer));
+        }
+        
+        [HttpGet("containers/{id}")]
+        public ActionResult<ModelContainer> GetContainer(int id)
+        {
+            return Ok(ToModelContainer(storageService.GetContainerById(id)));
+        }
+
+        
+        [HttpPost("containers/")]
+        public ActionResult<ModelContainer> AddOrUpdateContainer([FromBody]NewContainer addedItem)
+        {
+            return Ok(ToModelContainer(storageService.AddOrUpdateContainer(addedItem)));
+        }
+        
+
+        [HttpDelete("containers/{id}")]
+        public ActionResult<bool> DeleteContainer(int id)
+        {
+            return storageService.DeleteContainer(id);
+        }
+
+
+            
+
+
+
+
+
+
+
+
         /*
         // PUT: api/Items/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -113,8 +164,10 @@ namespace Warehouse.Controllers
 
         private ListItem ToListItem(Item item)
         {
+            if (item == null) return null;
             return new ListItem
             {
+                Id = item.Id,
                 Name = item.Name,
                 Description = item.Description,
                 Count = item.Count,
@@ -122,5 +175,50 @@ namespace Warehouse.Controllers
             };
         }
 
+        private ModelItem ToModelItem(Item item)
+        {
+            if (item == null) return null;
+            return new ModelItem
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Description = item.Description,
+                Count = item.Count,
+                ContainerId = item.ContainerId
+            };
+        }
+
+        private ListContainer ToListContainer(Container container)
+        {
+            if (container == null) return null;
+            var itemNames = container.Items.Aggregate("", (i, y) => { return i + y.Name + ", "; });
+            string shortItemNames = itemNames.Substring(0, Math.Min(itemNames.Length, 60));
+            var listContainer = new ListContainer
+            {
+                Id = container.Id,
+                Name = container.Name,
+                StoredItemCount = container.Items.Sum(i => i.Count),
+                ItemsNames = shortItemNames,
+                LastEmployee = container.LastEmployee?.FullName
+            };
+
+            return listContainer;
+        }
+
+        private ModelContainer ToModelContainer(Container container)
+        {
+            if (container == null) return null;
+            var listContainer = new ModelContainer
+            {
+                Id = container.Id,
+                Name = container.Name,
+                Items = container.Items.Select(i=>ToModelItem(i)).ToList(),
+                LastEmployee = container.LastEmployee?.FullName
+            };
+
+            return listContainer;
+        }
+
+        
     }
 }

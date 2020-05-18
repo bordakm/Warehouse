@@ -230,19 +230,30 @@ namespace Warehouse.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "f77fc85d-967a-4957-876e-0b6eed755efd", 0, "5a681def-42a1-43b2-891d-6922de991a07", "A1alma@alma.hu", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEFa8TDCCW9LcnFG2PIHgFwElP4OrukACgRGKaMiVkhhd3D2ylJdTZyOujIM9Be+Z/A==", null, false, "2885e31a-a69e-42a4-a421-23a82f051503", false, null });
-
-            migrationBuilder.InsertData(
                 table: "Containers",
                 columns: new[] { "Id", "LastEmployeeId", "Name" },
                 values: new object[] { 1, null, "T1" });
 
             migrationBuilder.InsertData(
+                table: "Containers",
+                columns: new[] { "Id", "LastEmployeeId", "Name" },
+                values: new object[] { 2, null, "T2" });
+
+            migrationBuilder.InsertData(
+                table: "Containers",
+                columns: new[] { "Id", "LastEmployeeId", "Name" },
+                values: new object[] { 3, null, "T3" });
+
+            migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[] { 1, 1, 4, null, "Csavarhúzó" });
+                values: new object[,]
+                {
+                    { 1, 1, 4, "akkumulátoros", "Fúrógép" },
+                    { 2, 1, 4, "kereszthornyos", "Csavarhúzó" },
+                    { 3, 2, 4, "100 méter hosszú, fekete", "Ethernet kábel" },
+                    { 4, 3, 100, "8mm", "Csavarok" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
