@@ -32,9 +32,11 @@ namespace Warehouse.Services
                                 .ToList();
         }
 
-        public Item AddOrUpdateItem(ModelItem item)
+        public Item AddOrUpdateItem(ModelItem item, string userid)
         {
-            var dbItem = context.Items.FirstOrDefault(i => i.Id == item.Id);
+            Employee employee = context.Employees.FirstOrDefault(e => e.Id == userid);
+            var dbItem = context.Items.Include(i=>i.Container).FirstOrDefault(i => i.Id == item.Id);
+            dbItem.Container.LastEmployee = employee;
             if (dbItem == null)
             {
                 dbItem = new Item()
@@ -53,7 +55,8 @@ namespace Warehouse.Services
                 dbItem.Count = item.Count;
                 dbItem.ContainerId = item.ContainerId;
             }
-
+            Container newContainer = context.Containers.FirstOrDefault(c => c.Id == dbItem.ContainerId);
+            if (newContainer != null) newContainer.LastEmployee = employee;
             context.SaveChanges();
             return dbItem;
         }

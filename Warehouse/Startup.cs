@@ -44,7 +44,7 @@ namespace Warehouse
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse", Version = "v1" });
             });
 
             services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -98,7 +98,6 @@ namespace Warehouse
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -108,8 +107,10 @@ namespace Warehouse
 
             app.UseRouting();
 
+
             app.UseAuthentication();
             app.UseIdentityServer();
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
@@ -151,7 +152,9 @@ namespace Warehouse
             var poweruser = new Employee
             {
                 UserName = email,
-                Email = email
+                Email = email,
+                EmailConfirmed = true,
+                FullName = "Admin"
             };
             string userPWD = password;
             var _user = await UserManager.FindByEmailAsync(email);

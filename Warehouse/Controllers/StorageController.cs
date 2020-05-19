@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace Warehouse.Controllers
     {
         private readonly WarehouseContext _context;
         private readonly IStorageService storageService;
-
+        string userId = "8a774af9-459b-4189-bdb3-02d2202e4932"; //TODO, admin user id
         public StorageController(WarehouseContext context, IStorageService itemService)
         {
             _context = context;
@@ -43,7 +44,7 @@ namespace Warehouse.Controllers
         [HttpPost("items/")]
         public ActionResult<ModelItem> AddOrUpdateItem([FromBody]ModelItem addedItem)
         {
-            return ToModelItem(storageService.AddOrUpdateItem(addedItem));
+            return ToModelItem(storageService.AddOrUpdateItem(addedItem, userId));
         }
 
         [HttpDelete("items/{id}")]
@@ -65,14 +66,12 @@ namespace Warehouse.Controllers
         {
             return Ok(ToModelContainer(storageService.GetContainerById(id)));
         }
-
         
         [HttpPost("containers/")]
         public ActionResult<ModelContainer> AddOrUpdateContainer([FromBody]NewContainer addedItem)
         {
             return Ok(ToModelContainer(storageService.AddOrUpdateContainer(addedItem)));
-        }
-        
+        }        
 
         [HttpDelete("containers/{id}")]
         public ActionResult<bool> DeleteContainer(int id)

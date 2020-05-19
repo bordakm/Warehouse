@@ -12,7 +12,7 @@ namespace Warehouse.Services
         ICollection<Item> GetAllItems();
         ICollection<Item> SearchItems(string word);
         Item GetItemById(int id);
-        Item AddOrUpdateItem(ModelItem item);
+        Item AddOrUpdateItem(ModelItem item, string userid);
         bool DeleteItem(int id);
         ICollection<Container> GetAllContainers();
         Container GetContainerById(int id);
