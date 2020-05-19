@@ -9,22 +9,23 @@ import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
-
 import './custom.css'
+import { EditContainer } from './components/EditContainer';
 
 export default class App extends Component {
-  static displayName = App.name;
+    static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
-        <AuthorizeRoute exact path='/' component={Home} />
-        <AuthorizeRoute path='/counter' component={Counter} />
-        <AuthorizeRoute path='/fetch-data' component={FetchData} />
-        <AuthorizeRoute path='/items' component={Items} />
-        <AuthorizeRoute path='/containers' component={Containers} />
-        <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-      </Layout>
-    );
-  }
+    render() {
+        return (
+            <Layout>
+                <AuthorizeRoute exact path='/' component={Home} />
+                <AuthorizeRoute path='/counter' component={Counter} />
+                <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                <AuthorizeRoute path='/items' component={Items} />
+                <AuthorizeRoute exact path='/containers' component={Containers} />
+                <AuthorizeRoute path='/containers/:id' component={EditContainer} />
+                <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            </Layout>
+        );
+    }
 }

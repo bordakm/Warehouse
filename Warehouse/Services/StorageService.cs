@@ -119,5 +119,12 @@ namespace Warehouse.Services
             context.SaveChanges();
             return dbContainer;
         }
+
+        public bool ContainerExists(int id)
+        {
+            var cont = context.Containers.FirstOrDefault(c => c.Id == id);
+            if (cont == null) return false;
+            return true;
+        }
     }
 }

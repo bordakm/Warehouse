@@ -17,7 +17,9 @@ code {
     font-size:18px;
 }
 
-#filterText {
+#filterText, #newNameInput {
     width: 250px;
     display: inline;
 }
+
+
