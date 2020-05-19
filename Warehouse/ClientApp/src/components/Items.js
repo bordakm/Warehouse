@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService'
+import { Link } from 'react-router-dom';
 
 export class Items extends Component {
   static displayName = Items.name;
@@ -55,14 +56,19 @@ export class Items extends Component {
                 <span>
                     <span className="display-4">Items</span> 
                     <button type="button" className="btn btn-secondary mb-3 ml-4">Items</button>
-                    <button type="button" className="btn btn-primary mb-3 mr-2">Containers</button>
+                    <Link to="/containers">
+                        <button type="button" className="btn btn-primary mb-3 mr-2">Containers</button>
+                    </Link>
+
+                    
+                    
+
                  </span>
                 <span className="mb-2">
                 <span className="pb-3">
                         <span> Filter: </span>
                         <input onChange={this.handleSearchChange} type="text" className="form-control" id="filterText" placeholder="filter" />    
                     </span>
-                    <button type="button" className="btn btn-primary mb-1 ml-3">Logs</button>
                     <button type="button" className="btn btn-primary mb-1 mx-2">Add new item</button>
                 </span>
             </div>
