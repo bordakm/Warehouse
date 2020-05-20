@@ -96,7 +96,7 @@ export class Containers extends Component {
             <div>
                 <div className="d-flex justify-content-between align-items-end">
                     <span>
-                        <span className="display-4">Containers</span>
+                        <span className="display-4 pagetitle">Containers</span>
                         <Link to="/items">
                             <button type="button" className="btn btn-primary mb-3 ml-4">Items</button>
                         </Link>
