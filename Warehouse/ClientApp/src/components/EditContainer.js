@@ -108,7 +108,7 @@ export class EditContainer extends Component {
         if (this.state.changingName) {
             nameChanger =
                 <span>
-                    <input type="text" className="form-control" id="newNameInput" placeholder="filter" />
+                    <input type="text" className="form-control" id="newNameInput" placeholder="new container name" />
                     <button onClick={this.handleNameChange} type="button" className="btn btn-primary mb-1 ml-4">Ok</button>
                 </span>
         }

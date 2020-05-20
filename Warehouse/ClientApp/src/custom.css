@@ -23,3 +23,7 @@ code {
 }
 
 
+tbody tr:hover {
+    background-color: #d5d5d5;
+}
+

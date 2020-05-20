@@ -21,28 +21,38 @@ export class Items extends Component {
 
 
     static renderItemsTable(items) {
-        return (
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>Item name</th>
-                        <th>Item description</th>
-                        <th>Count</th>
-                        <th>Container</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map(it =>
-                        <tr key={it.id}>
-                            <td>{it.name}</td>
-                            <td>{it.description}</td>
-                            <td>{it.count}</td>
-                            <td>{it.containerName}</td>
+        if (items.length > 0) {
+            return (
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <th>Item name</th>
+                            <th>Item description</th>
+                            <th>Count</th>
+                            <th>Container</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
-        );
+                    </thead>
+                    <tbody>
+                        {items.map(it =>
+                            <tr key={it.id}>
+                                <td>{it.name}</td>
+                                <td>{it.description}</td>
+                                <td>{it.count}</td>
+                                <td>{it.containerName}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <hr />
+                    <h4>There are no items to list!</h4>
+                </div>
+            );
+        }
     }
 
     render() {
@@ -66,7 +76,7 @@ export class Items extends Component {
                     </span>
                     <span className="mb-2">
                         <span className="pb-3">
-                            <span> Filter: </span>
+                            <span> Filter items: </span>
                             <input onChange={this.handleSearchChange} type="text" className="form-control" id="filterText" placeholder="filter" />
                         </span>
                         <button type="button" className="btn btn-primary mb-1 mx-2">Add new item</button>
