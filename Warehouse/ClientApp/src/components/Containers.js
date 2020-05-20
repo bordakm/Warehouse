@@ -104,7 +104,9 @@ export class Containers extends Component {
                     </span>
                     <span className="mb-2">
                         {nameInput}
-                        <button type="button" className="btn btn-primary mb-1 ml-3">Logs</button>
+                        <Link to="/logs">
+                            <button type="button" className="btn btn-primary mb-1 ml-3">Logs</button>
+                        </Link>
                     </span>
                 </div>
 

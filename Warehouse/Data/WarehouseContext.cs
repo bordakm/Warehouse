@@ -21,9 +21,11 @@ namespace Warehouse
         public DbSet<Item> Items { get; set; }
         public DbSet<Container> Containers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<LogEntry> LogEntries { get; set; }
 
         public WarehouseContext(DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+            IOptions<OperationalStoreOptions> operationalStoreOptions) 
+            : base(options, operationalStoreOptions)
         {
             
         }

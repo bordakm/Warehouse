@@ -13,10 +13,10 @@ namespace Warehouse.Services
         ICollection<Item> SearchItems(string word);
         Item GetItemById(int id);
         Item AddOrUpdateItem(ModelItem item, string userid);
-        bool DeleteItem(int id);
+        bool DeleteItem(int id, string userid);
         ICollection<Container> GetAllContainers();
         Container GetContainerById(int id);
-        bool DeleteContainer(int id);
-        Container AddOrUpdateContainer(NewContainer container);
+        bool DeleteContainer(int id, string userid);
+        Container AddOrUpdateContainer(NewContainer container, string userid);
     }
 }

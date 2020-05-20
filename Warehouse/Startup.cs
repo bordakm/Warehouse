@@ -35,19 +35,17 @@ namespace Warehouse
             services.AddControllers();
             services.AddDbContext<WarehouseContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            /*services.AddSingleton<ItemService, IItemService>();
-            services.AddScoped<ItemService, IItemService>();*/
-            //services.AddSingleton(typeof(IItemService), typeof(ItemService));
+           
             services.AddScoped(typeof(IStorageService), typeof(StorageService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
+            services.AddScoped(typeof(ILogService), typeof(LogService));
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse", Version = "v1" });
             });
 
-            services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<WarehouseContext>();
 
@@ -56,6 +54,7 @@ namespace Warehouse
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -110,7 +109,6 @@ namespace Warehouse
 
             app.UseAuthentication();
             app.UseIdentityServer();
-
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

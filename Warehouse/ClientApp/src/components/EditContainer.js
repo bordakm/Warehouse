@@ -29,8 +29,7 @@ export class EditContainer extends Component {
     }
 
     renderItemsTable(items) {
-        console.log(items)
-        if (items.length > 0)
+        if (items?.length > 0)
             return (
                 <table className='table'>
                     <thead>

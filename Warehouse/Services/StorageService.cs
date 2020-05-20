@@ -12,9 +12,11 @@ namespace Warehouse.Services
     public class StorageService : IStorageService
     {
         private WarehouseContext context;
-        public StorageService(WarehouseContext context)
+        private ILogService logService;
+        public StorageService(WarehouseContext context, ILogService logService)
         {
             this.context = context;
+            this.logService = logService;
         }
 
         public ICollection<Item> GetAllItems()
@@ -33,10 +35,10 @@ namespace Warehouse.Services
         }
 
         public Item AddOrUpdateItem(ModelItem item, string userid)
-        {
+        {            
             Employee employee = context.Employees.FirstOrDefault(e => e.Id == userid);
             var dbItem = context.Items.Include(i=>i.Container).FirstOrDefault(i => i.Id == item.Id);
-            //dbItem.Container.LastEmployee = employee; TODO !!ha item null is!!
+            
             if (dbItem == null)
             {
                 dbItem = new Item()
@@ -47,13 +49,24 @@ namespace Warehouse.Services
                     ContainerId = item.ContainerId
                 };
                 context.Items.Add(dbItem);
+                string containername = context.Containers.FirstOrDefault(c => c.Id == item.ContainerId).Name;
+                logService.AddEntry(userid, $"Added {item.Count} item(s) {item.Name} to container {containername}");
             }
             else
             {
+                string newcontainername = context.Containers.FirstOrDefault(c => c.Id == item.ContainerId).Name;
+                if(dbItem.ContainerId!=item.ContainerId)
+                    logService.AddEntry(userid, $"Moved {item.Name} from {dbItem.Container.Name} to {newcontainername}");
+                if (dbItem.Name != item.Name)
+                    logService.AddEntry(userid, $"Renamed {dbItem.Name} to {item.Name}");
+                if(dbItem.Count!=item.Count)
+                    logService.AddEntry(userid, $"{dbItem.Name} count changed from {dbItem.Count} to {item.Count}");
+               
+                dbItem.Container.LastEmployee = employee;
                 dbItem.Name = item.Name;
                 dbItem.Description = item.Description;
                 dbItem.Count = item.Count;
-                dbItem.ContainerId = item.ContainerId;
+                dbItem.ContainerId = item.ContainerId;                
             }
             Container newContainer = context.Containers.FirstOrDefault(c => c.Id == dbItem.ContainerId);
             if (newContainer != null) newContainer.LastEmployee = employee;
@@ -61,10 +74,11 @@ namespace Warehouse.Services
             return dbItem;
         }
 
-        public bool DeleteItem(int id)
+        public bool DeleteItem(int id, string userid)
         {
-            var item = context.Items.FirstOrDefault(i => i.Id == id);
+            var item = context.Items.Include(i=>i.Container).FirstOrDefault(i => i.Id == id);
             if (item == null) return false;
+            logService.AddEntry(userid, $"Deleted {item.Name} from {item.Container.Name}");
             context.Items.Remove(item);
             context.SaveChanges();
             return true;
@@ -93,21 +107,24 @@ namespace Warehouse.Services
                .FirstOrDefault(c => c.Id == id);
         }
 
-        public bool DeleteContainer(int id)
+        public bool DeleteContainer(int id, string userid)
         {
             var container = context.Containers.FirstOrDefault(c => c.Id == id);
-            if (container == null) 
-                return false;
+            if (container == null) return false;
+            logService.AddEntry(userid, $"Deleted container named {container.Name}");
             context.Containers.Remove(container);
             context.SaveChanges();
             return true;
         }
 
-        public Container AddOrUpdateContainer(NewContainer container)
+        public Container AddOrUpdateContainer(NewContainer container, string userid)
         {
             var dbContainer = context.Containers.FirstOrDefault(c => c.Id == container.Id);
-            if (dbContainer != null)
-                dbContainer.Name = container.Name;
+            if (dbContainer != null && dbContainer.Name != container.Name)
+            {
+                logService.AddEntry(userid, $"Renamed container from {dbContainer.Name} to {container.Name}");
+                dbContainer.Name = container.Name;               
+            }
             else
             {
                 dbContainer = new Container()
@@ -115,16 +132,10 @@ namespace Warehouse.Services
                     Name = container.Name
                 };
                 context.Containers.Add(dbContainer);
+                logService.AddEntry(userid, $"Added new container named {dbContainer.Name}");
             }
             context.SaveChanges();
             return dbContainer;
-        }
-
-        public bool ContainerExists(int id)
-        {
-            var cont = context.Containers.FirstOrDefault(c => c.Id == id);
-            if (cont == null) return false;
-            return true;
-        }
+        }        
     }
 }

@@ -50,7 +50,18 @@ export class EditItem extends Component {
     };
 
     handleSubmitChanges = async () => {
-        if (!this.state.editedItem.name || this.state.editedItem.name.length == null) return;
+        if (!this.state.editedItem.name
+            || !(this.state.editedItem.name?.length > 0)
+            || this.state.containers.length == 0)
+            {
+                return;
+            }
+        if (!this.state.editedItem.containerId) {
+            var tmpItem = { ...this.state.editedItem };
+            tmpItem.containerId = this.state.containers[0].id;
+            this.setState({ editedItem: tmpItem });
+        }
+       
         const token = await authService.getAccessToken();
         const url = 'api/storage/items';
         const headers = { 'Content-Type': 'application/json', 'accept': 'text/plain' };
@@ -159,6 +170,6 @@ export class EditItem extends Component {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
-        this.setState({ containers: data });
+        this.setState({ containers: data });        
     }
 }

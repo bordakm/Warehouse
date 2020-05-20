@@ -208,6 +208,27 @@ namespace Warehouse.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LogEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    time = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LogEntries_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -316,6 +337,11 @@ namespace Warehouse.Migrations
                 column: "ContainerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LogEntries_EmployeeId",
+                table: "LogEntries",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 table: "PersistedGrants",
                 column: "Expiration");
@@ -348,6 +374,9 @@ namespace Warehouse.Migrations
 
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "LogEntries");
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");

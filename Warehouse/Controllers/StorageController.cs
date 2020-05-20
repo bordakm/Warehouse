@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,7 @@ namespace Warehouse.Controllers
     {
         private readonly WarehouseContext _context;
         private readonly IStorageService storageService;
-        string userId = "8a774af9-459b-4189-bdb3-02d2202e4932"; //TODO, admin user id
+        //string userId = "8a774af9-459b-4189-bdb3-02d2202e4932"; //TODO, admin user id
         public StorageController(WarehouseContext context, IStorageService itemService)
         {
             _context = context;
@@ -27,6 +28,7 @@ namespace Warehouse.Controllers
         }
 
         [HttpGet("items")]
+        [Authorize]
         public ActionResult<IEnumerable<ListItem>> GetItems([FromQuery(Name = "search")]string searchTerm)
         {
             if (searchTerm == null)            
@@ -36,47 +38,56 @@ namespace Warehouse.Controllers
         }
 
         [HttpGet("items/{id}")]
-        public ActionResult<ModelItem> GetItems(int id)
+        [Authorize]
+        public ActionResult<ModelItem> GetItem(int id)
         {
             return ToModelItem(storageService.GetItemById(id));
         }
 
         [HttpPost("items/")]
+        [Authorize]
         public ActionResult<ModelItem> AddOrUpdateItem([FromBody]ModelItem addedItem)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return ToModelItem(storageService.AddOrUpdateItem(addedItem, userId));
         }
 
         [HttpDelete("items/{id}")]
+        [Authorize]
         public ActionResult<bool> DeleteItem(int id)
         {
-            return storageService.DeleteItem(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return storageService.DeleteItem(id, userId);
         }
 
-
-
         [HttpGet("containers")]
+        [Authorize]
         public ActionResult<IEnumerable<ListContainer>> GetContainers()
         {
             return Ok(storageService.GetAllContainers().Select(ToListContainer));
         }
         
         [HttpGet("containers/{id}")]
+        [Authorize]
         public ActionResult<ModelContainer> GetContainer(int id)
         {
             return Ok(ToModelContainer(storageService.GetContainerById(id)));
         }
         
         [HttpPost("containers/")]
+        [Authorize]
         public ActionResult<ModelContainer> AddOrUpdateContainer([FromBody]NewContainer addedItem)
         {
-            return Ok(ToModelContainer(storageService.AddOrUpdateContainer(addedItem)));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(ToModelContainer(storageService.AddOrUpdateContainer(addedItem, userId)));
         }        
 
         [HttpDelete("containers/{id}")]
+        [Authorize]
         public ActionResult<bool> DeleteContainer(int id)
         {
-            return storageService.DeleteContainer(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return storageService.DeleteContainer(id, userId);
         }
 
 
