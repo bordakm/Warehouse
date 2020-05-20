@@ -15,8 +15,8 @@ export class Containers extends Component {
         this.populateContainersData();
     }
 
-    handleContainerClick(p){
-        this.props.history.push('/containers/'+p)
+    handleContainerClick(id){
+        this.props.history.push('/containers/' + id);
     } 
 
     renderContainersTable(containers) {
@@ -32,7 +32,7 @@ export class Containers extends Component {
                 </thead>
                 <tbody>                    
                     {containers.map(cont =>
-                        <tr onClick={() => { this.handleContainerClick(cont.id)}} data-id={cont.id} key={cont.id} >
+                        <tr onClick={() => { this.handleContainerClick(cont.id)}} key={cont.id} >
                             <td >{cont.name}</td>
                             <td>{cont.storedItemCount}</td>
                             <td>{cont.itemsNames === "" ? "-" : cont.itemsNames}</td>

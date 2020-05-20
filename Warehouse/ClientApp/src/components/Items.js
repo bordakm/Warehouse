@@ -19,8 +19,11 @@ export class Items extends Component {
         this.populateItemsData();
     }
 
+    handleItemClick = (id) => {
+        this.props.history.push('/items/' + id)
+    }
 
-    static renderItemsTable(items) {
+    renderItemsTable(items) {
         if (items.length > 0) {
             return (
                 <table className='table'>
@@ -34,7 +37,7 @@ export class Items extends Component {
                     </thead>
                     <tbody>
                         {items.map(it =>
-                            <tr key={it.id}>
+                            <tr onClick={() => { this.handleItemClick(it.id);}} key={it.id}>
                                 <td>{it.name}</td>
                                 <td>{it.description}</td>
                                 <td>{it.count}</td>
@@ -58,7 +61,7 @@ export class Items extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Items.renderItemsTable(this.state.items);
+            : this.renderItemsTable(this.state.items);
 
         return (
             <div>
@@ -69,17 +72,17 @@ export class Items extends Component {
                         <Link to="/containers">
                             <button type="button" className="btn btn-primary mb-3 mr-2">Containers</button>
                         </Link>
-
-
-
-
                     </span>
                     <span className="mb-2">
                         <span className="pb-3">
                             <span> Filter items: </span>
                             <input onChange={this.handleSearchChange} type="text" className="form-control" id="filterText" placeholder="filter" />
                         </span>
-                        <button type="button" className="btn btn-primary mb-1 mx-2">Add new item</button>
+                        <Link to={{
+                            pathname:"/items/-1"
+                        }}>
+                            <button type="button" className="btn btn-primary mb-1 mx-2">Add new item</button>
+                        </Link>
                     </span>
                 </div>
 

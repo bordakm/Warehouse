@@ -22,6 +22,17 @@ code {
     display: inline;
 }
 
+#itemNameInput, #itemDescInput {
+    width: 400px;
+}
+
+#itemCountInput{
+    width:100px;
+}
+
+#itemContainerInput{
+    width:150px;
+}
 
 tbody tr:hover {
     background-color: #d5d5d5;

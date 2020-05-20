@@ -24,8 +24,12 @@ export class EditContainer extends Component {
         this.populateItemsData();
     }
 
+    handleItemClick(id) {
+        this.props.history.push('/items/' + id);
+    }
 
-    static renderItemsTable(items) {
+    renderItemsTable(items) {
+        console.log(items)
         if (items.length > 0)
             return (
                 <table className='table'>
@@ -34,16 +38,14 @@ export class EditContainer extends Component {
                             <th>Item name</th>
                             <th>Item description</th>
                             <th>Count</th>
-                            <th>Container</th>
                         </tr>
                     </thead>
                     <tbody>
                         {items.map(it =>
-                            <tr key={it.id}>
+                            <tr onClick={() => { this.handleItemClick(it.id) }} key={it.id} >
                                 <td>{it.name}</td>
                                 <td>{it.description}</td>
                                 <td>{it.count}</td>
-                                <td>{it.containerName}</td>
                             </tr>
                         )}
                     </tbody>
@@ -102,18 +104,18 @@ export class EditContainer extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : EditContainer.renderItemsTable(this.state.items);
+            : this.renderItemsTable(this.state.items);
 
         let nameChanger;
         if (this.state.changingName) {
             nameChanger =
                 <span>
                     <input type="text" className="form-control" id="newNameInput" placeholder="new container name" />
-                    <button onClick={this.handleNameChange} type="button" className="btn btn-primary mb-1 ml-4">Ok</button>
+                    <button onClick={this.handleNameChange} type="button" className="btn btn-primary mb-1 ml-1">Ok</button>
                 </span>
         }
         else {
-            nameChanger = <button type="button" onClick={this.nameChangeClick} className="btn btn-primary mb-1 ml-4">Rename container</button>
+            nameChanger = <button type="button" onClick={this.nameChangeClick} className="btn btn-primary mb-1 ml-2">Rename container</button>
         }
 
         return (
@@ -123,6 +125,13 @@ export class EditContainer extends Component {
                         <span className="display-4">Container: {this.state.container.name}</span>
                     </span>
                     <span className="mb-2">
+
+                        <Link to={{
+                            pathname: "/items/-1",
+                            data: this.state.container.id
+                        }}>
+                            <button type="button" className="btn btn-primary mb-1 mx-2">Add new items</button>
+                        </Link>
                         {nameChanger}                        
                         <button onClick={this.deleteContainer} type="button" className="btn btn-danger mb-1 ml-3">Delete container</button>
                     </span>

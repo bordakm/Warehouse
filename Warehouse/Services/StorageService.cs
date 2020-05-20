@@ -36,7 +36,7 @@ namespace Warehouse.Services
         {
             Employee employee = context.Employees.FirstOrDefault(e => e.Id == userid);
             var dbItem = context.Items.Include(i=>i.Container).FirstOrDefault(i => i.Id == item.Id);
-            dbItem.Container.LastEmployee = employee;
+            //dbItem.Container.LastEmployee = employee; TODO !!ha item null is!!
             if (dbItem == null)
             {
                 dbItem = new Item()
