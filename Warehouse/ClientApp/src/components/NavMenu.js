@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import authService from './api-authorization/AuthorizeService';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -12,8 +13,13 @@ export class NavMenu extends Component {
 
         this.toggleNavbar = this.toggleNavbar.bind(this);
         this.state = {
-            collapsed: true
+            collapsed: true,
+            loggedIn: false
         };
+    }
+
+    componentDidMount() {
+        //authService.subscribe(() => { this.setState({ loggedIn: authService.isAuthenticated() }); });
     }
 
     toggleNavbar() {
@@ -31,18 +37,9 @@ export class NavMenu extends Component {
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/items">Storage</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/users">Users</NavLink>
-                                </NavItem>
+
+                                {/*sorry we have moved to login menu*/}
+
                                 <LoginMenu>
                                 </LoginMenu>
                             </ul>

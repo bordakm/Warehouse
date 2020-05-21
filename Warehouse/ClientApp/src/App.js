@@ -22,7 +22,7 @@ export default class App extends Component {
     render() {
         return (
             <Layout>
-                <AuthorizeRoute exact path='/' component={Home} />
+                <AuthorizeRoute exact path='/' component={Containers} />
                 <AuthorizeRoute path='/counter' component={Counter} />
                 <AuthorizeRoute path='/fetch-data' component={FetchData} />
                 <AuthorizeRoute exact path='/items' component={Items} />
