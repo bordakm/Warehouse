@@ -20,30 +20,37 @@ export class NewUser extends Component {
     }
 
     handleEmailChange = (event) => {
-        var tmpItem = { ...this.state.user };
-        tmpItem.email = event.target.value;
-        this.setState({ user: tmpItem })
+        var tmpUser = { ...this.state.user };
+        tmpUser.email = event.target.value;
+        this.setState({ user: tmpUser })
     };
 
     handleNameChange = (event) => {
-        var tmpItem = { ...this.state.user };
-        tmpItem.name = event.target.value;
-        this.setState({ user: tmpItem })
+        var tmpUser = { ...this.state.user };
+        tmpUser.name = event.target.value;
+        this.setState({ user: tmpUser })
     };
 
     handlePasswordChange = (event) => {
-        var tmpItem = { ...this.state.user };
-        tmpItem.password = event.target.value;
-        this.setState({ user: tmpItem })
+        var tmpUser = { ...this.state.user };
+        tmpUser.password = event.target.value;
+        this.setState({ user: tmpUser })
     };
 
     handleRoleChange = (event) => {
-        var tmpItem = { ...this.state.user };
-        tmpItem.role = event.target.value;
-        this.setState({ user: tmpItem })
+        var tmpUser = { ...this.state.user };
+        tmpUser.role = event.target.value;
+        this.setState({ user: tmpUser })
     };
 
     handleSubmitUser = async () => {
+
+        if (!this.state.user.role) {
+            var tmpUser = { ...this.state.user };
+            tmpUser.role = this.state.roles[0]??"basic";
+            this.setState({ user: tmpUser });
+        }
+
         const token = await authService.getAccessToken();
         const url = 'api/users';
         const headers = { 'Content-Type': 'application/json', 'accept': 'text/plain' };

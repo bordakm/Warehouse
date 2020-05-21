@@ -213,7 +213,7 @@ namespace Warehouse.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    time = table.Column<DateTime>(nullable: false),
+                    Time = table.Column<DateTime>(nullable: false),
                     EmployeeId = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true)
                 },
