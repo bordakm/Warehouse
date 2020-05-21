@@ -13,6 +13,8 @@ import './custom.css'
 import { EditContainer } from './components/EditContainer';
 import { EditItem } from './components/EditItem';
 import { Logs } from './components/Logs';
+import { Users } from './components/Users';
+import { NewUser } from './components/NewUser';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -28,6 +30,8 @@ export default class App extends Component {
                 <AuthorizeRoute exact path='/containers' component={Containers} />
                 <AuthorizeRoute path='/containers/:id' component={EditContainer} />    
                 <AuthorizeRoute path='/logs' component={Logs} />
+                <AuthorizeRoute exact path='/users' component={Users} />
+                <AuthorizeRoute exact path='/users/new' component={NewUser} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             </Layout>
         );

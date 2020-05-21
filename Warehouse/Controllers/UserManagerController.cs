@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Warehouse;
+using Warehouse.Controllers.DTO;
 using Warehouse.Entities;
 using Warehouse.Services;
 
 namespace Warehouse.Controllers
 {
-    [Route("api/usermanagement")]
+    [Route("api/users")]
     [ApiController]
     public class UserManagerController : ControllerBase
     {
@@ -25,12 +26,39 @@ namespace Warehouse.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetItems()
+        public ActionResult<IEnumerable<ModelUser>> ListAllUsers()
         {
-            // return await _context.Items.ToListAsync();
-            var items = userService.AddUser("mate@mate.huu", "123", "Bordak Mate");
-            return Ok(items);
+            var users = userService.GetAllUsers().Select(ToModelUser);
+            return Ok(users);
         }
+
+        [HttpGet("roles")]
+        public ActionResult<IEnumerable<string>> ListAllRoles()
+        {
+            var roles = userService.GetAllRoles();
+            return Ok(roles);
+        }
+
+        [HttpPost]
+        public ActionResult AddNewUser([FromBody]NewUser newuser)
+        {
+            var status = userService.AddUser(newuser.Email, newuser.Password, newuser.FullName, newuser.Role);
+            if (status.Succeeded)               
+                return Ok();
+            return Conflict();
+        }
+
+        public ModelUser ToModelUser(Employee employee)
+        {
+            return new ModelUser
+            {
+                Id = employee.Id,
+                Email = employee.Email,
+                FullName = employee.FullName,
+                Role = userService.GetUserRole(employee.Id)
+            };
+        }
+
 
         /*
         // GET: api/Items/5
