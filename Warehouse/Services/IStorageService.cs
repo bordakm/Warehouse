@@ -9,11 +9,12 @@ namespace Warehouse.Services
 {
     public interface IStorageService
     {
-        ICollection<Item> GetAllItems();
         ICollection<Item> SearchItems(string word);
         Item GetItemById(int id);
-        Item AddOrUpdateItem(ModelItem item, string userid);
         bool DeleteItem(int id, string userid);
+
+        ICollection<Item> GetAllItems();
+        Item AddOrUpdateItem(ModelItem item, string userid);
         ICollection<Container> GetAllContainers();
         Container GetContainerById(int id);
         bool DeleteContainer(int id, string userid);

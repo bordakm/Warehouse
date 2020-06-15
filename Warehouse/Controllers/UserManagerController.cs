@@ -48,7 +48,7 @@ namespace Warehouse.Controllers
             return Conflict();
         }
 
-        public ModelUser ToModelUser(Employee employee)
+        private ModelUser ToModelUser(Employee employee)
         {
             return new ModelUser
             {
@@ -58,87 +58,6 @@ namespace Warehouse.Controllers
                 Role = userService.GetUserRole(employee.Id)
             };
         }
-
-
-        /*
-        // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
-
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return item;
-        }
-
-        // PUT: api/Items/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
-        {
-            if (id != item.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(item).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Items
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(Item item)
-        {
-            _context.Items.Add(item);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetItem", new { id = item.Id }, item);
-        }
-
-        // DELETE: api/Items/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Item>> DeleteItem(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
-
-            return item;
-        }
-
-        private bool ItemExists(int id)
-        {
-            return _context.Items.Any(e => e.Id == id);
-        }*/
     }
 }
 

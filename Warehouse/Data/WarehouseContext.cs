@@ -13,10 +13,6 @@ namespace Warehouse
 {
     public class WarehouseContext : ApiAuthorizationDbContext<Employee>
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer();
-        //}
 
         public DbSet<Item> Items { get; set; }
         public DbSet<Container> Containers { get; set; }

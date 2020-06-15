@@ -20,7 +20,6 @@ namespace Warehouse.Controllers
     {
         private readonly WarehouseContext _context;
         private readonly ILogService logService;
-        //string userId = "8a774af9-459b-4189-bdb3-02d2202e4932"; //TODO, admin user id
         public LogsController(WarehouseContext context, ILogService logService)
         {
             _context = context;
@@ -31,7 +30,6 @@ namespace Warehouse.Controllers
         [Authorize]
         public ActionResult<IEnumerable<ListItem>> GetAllLogs()
         {
-            //return Ok(storageService.GetAllItems().Select(ToListItem));
             return Ok(logService.ListAllLogs().Select(ToModelLogEntry));
         }
 

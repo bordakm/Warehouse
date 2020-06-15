@@ -10,7 +10,7 @@ using Warehouse;
 namespace Warehouse.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20200521024015_init")]
+    [Migration("20200521044317_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
