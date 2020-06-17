@@ -33,9 +33,10 @@ namespace Warehouse
         public void ConfigureServices(IServiceCollection services)
         {            
             services.AddControllers();
-            services.AddDbContext<WarehouseContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            //services.AddDbContext<WarehouseContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddDbContext<WarehouseContext>(o => o.UseSqlite("Data Source=database.db"));
 
-           
+
             services.AddScoped(typeof(IStorageService), typeof(StorageService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(ILogService), typeof(LogService));
@@ -77,7 +78,7 @@ namespace Warehouse
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, WarehouseContext context)
         {
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -127,6 +128,8 @@ namespace Warehouse
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            ApplyMigrations(context);
             CreateRoles(serviceProvider).Wait();
         }
         
@@ -163,6 +166,15 @@ namespace Warehouse
                 {
                     await UserManager.AddToRoleAsync(poweruser, "Admin");
                 }
+            }
+        }
+
+
+        public void ApplyMigrations(WarehouseContext context)
+        {
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
             }
         }
 

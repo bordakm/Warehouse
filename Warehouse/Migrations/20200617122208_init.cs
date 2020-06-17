@@ -86,7 +86,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -107,7 +107,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -192,7 +192,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     LastEmployeeId = table.Column<string>(nullable: true)
                 },
@@ -212,7 +212,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Time = table.Column<DateTime>(nullable: false),
                     EmployeeId = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true)
@@ -233,7 +233,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ContainerId = table.Column<int>(nullable: false),
@@ -268,13 +268,22 @@ namespace Warehouse.Migrations
             migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[,]
-                {
-                    { 1, 1, 4, "akkumulátoros", "Fúrógép" },
-                    { 2, 1, 4, "kereszthornyos", "Csavarhúzó" },
-                    { 3, 2, 4, "100 méter hosszú, fekete", "Ethernet kábel" },
-                    { 4, 3, 100, "8mm", "Csavarok" }
-                });
+                values: new object[] { 1, 1, 4, "akkumulátoros", "Fúrógép" });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
+                values: new object[] { 2, 1, 4, "kereszthornyos", "Csavarhúzó" });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
+                values: new object[] { 3, 2, 4, "100 méter hosszú, fekete", "Ethernet kábel" });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
+                values: new object[] { 4, 3, 100, "8mm", "Csavarok" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -285,8 +294,7 @@ namespace Warehouse.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -312,8 +320,7 @@ namespace Warehouse.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Containers_LastEmployeeId",
