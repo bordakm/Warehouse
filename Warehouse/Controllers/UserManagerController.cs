@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace Warehouse.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<ModelUser>> ListAllUsers()
         {
             var users = userService.GetAllUsers().Select(ToModelUser);
@@ -33,6 +35,7 @@ namespace Warehouse.Controllers
         }
 
         [HttpGet("roles")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> ListAllRoles()
         {
             var roles = userService.GetAllRoles();
@@ -40,6 +43,7 @@ namespace Warehouse.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult AddNewUser([FromBody]NewUser newuser)
         {
             var status = userService.AddUser(newuser.Email, newuser.Password, newuser.FullName, newuser.Role);

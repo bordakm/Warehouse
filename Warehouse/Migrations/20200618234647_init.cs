@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Warehouse.Migrations
@@ -25,7 +26,7 @@ namespace Warehouse.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 255, nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -86,7 +87,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -107,7 +108,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -192,7 +193,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     LastEmployeeId = table.Column<string>(nullable: true)
                 },
@@ -212,7 +213,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Time = table.Column<DateTime>(nullable: false),
                     EmployeeId = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true)
@@ -233,7 +234,7 @@ namespace Warehouse.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ContainerId = table.Column<int>(nullable: false),
@@ -268,22 +269,13 @@ namespace Warehouse.Migrations
             migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[] { 1, 1, 4, "akkumulátoros", "Fúrógép" });
-
-            migrationBuilder.InsertData(
-                table: "Items",
-                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[] { 2, 1, 4, "kereszthornyos", "Csavarhúzó" });
-
-            migrationBuilder.InsertData(
-                table: "Items",
-                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[] { 3, 2, 4, "100 méter hosszú, fekete", "Ethernet kábel" });
-
-            migrationBuilder.InsertData(
-                table: "Items",
-                columns: new[] { "Id", "ContainerId", "Count", "Description", "Name" },
-                values: new object[] { 4, 3, 100, "8mm", "Csavarok" });
+                values: new object[,]
+                {
+                    { 1, 1, 4, "akkumulátoros", "Fúrógép" },
+                    { 2, 1, 4, "kereszthornyos", "Csavarhúzó" },
+                    { 3, 2, 4, "100 méter hosszú, fekete", "Ethernet kábel" },
+                    { 4, 3, 100, "8mm", "Csavarok" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

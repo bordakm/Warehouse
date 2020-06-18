@@ -34,7 +34,12 @@ namespace Warehouse
         {            
             services.AddControllers();
             //services.AddDbContext<WarehouseContext>(o => o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-            services.AddDbContext<WarehouseContext>(o => o.UseSqlite("Data Source=database.db"));
+            //services.AddDbContext<WarehouseContext>(o => o.UseSqlite("Data Source=database.db"));
+            /*string postgresconnstr = "Server=localhost;" + "Port=5433;" +
+            "User Id=postgres;" + "Password=mysecretpassword;" + $"Database=postgres;";
+            services.AddDbContext<WarehouseContext>(o => o.UseNpgsql(postgresconnstr));*/
+
+            services.AddDbContext<WarehouseContext>(o => o.UseMySql("Server=nagyhfmysql.westeurope.azurecontainer.io;port=3306;Database=ef;User=root;Password=password;"));
 
 
             services.AddScoped(typeof(IStorageService), typeof(StorageService));

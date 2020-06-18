@@ -1,10 +1,7 @@
 ﻿using Converter.Temperature.Extensions.From;
 using Converter.Temperature.Extensions.To;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace Warehouse.Services
 {
@@ -16,7 +13,7 @@ namespace Warehouse.Services
         }
 
         public double GetTemperatureFahreinheit()
-        {
+        {   
             return GetTemperatureCelsius().FromCelsius().ToFahrenheit();
         }
 
