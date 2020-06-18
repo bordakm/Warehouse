@@ -20,10 +20,12 @@ namespace Warehouse.Controllers
     {
         private readonly WarehouseContext _context;
         private readonly IStorageService storageService;
-        public StorageController(WarehouseContext context, IStorageService itemService)
+        private readonly ITemperatureService temperatureService;
+        public StorageController(WarehouseContext context, IStorageService itemService, ITemperatureService temperatureService)
         {
             _context = context;
             this.storageService = itemService;
+            this.temperatureService = temperatureService;
         }
 
         [HttpGet("items")]
@@ -88,7 +90,26 @@ namespace Warehouse.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return storageService.DeleteContainer(id, userId);
         }
-          
+
+        [HttpGet("temperature/c")]
+        public ActionResult<TemperatureData> GetTemperatureC()
+        {
+            return new TemperatureData
+            {
+                Temperature = temperatureService.GetTemperatureCelsius(),
+                Unit = "°C"
+            };
+        }
+
+        [HttpGet("temperature/f")]
+        public ActionResult<TemperatureData> GetTemperatureF()
+        {
+            return new TemperatureData
+            {
+                Temperature = temperatureService.GetTemperatureFahreinheit(),
+                Unit = "°F"
+            };
+        }
 
         private ListItem ToListItem(Item item)
         {
@@ -146,7 +167,5 @@ namespace Warehouse.Controllers
 
             return listContainer;
         }
-
-        
     }
 }

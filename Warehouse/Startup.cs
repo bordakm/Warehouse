@@ -40,6 +40,7 @@ namespace Warehouse
             services.AddScoped(typeof(IStorageService), typeof(StorageService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(ILogService), typeof(LogService));
+            services.AddScoped(typeof(ITemperatureService), typeof(TcpTemperatureService));
 
             services.AddSwaggerGen(c =>
             {
