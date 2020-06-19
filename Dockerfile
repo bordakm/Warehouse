@@ -13,13 +13,6 @@ WORKDIR /source/Warehouse
 RUN dotnet publish -c release -o /app --no-restore
 RUN cp -r /source/Warehouse/ClientApp/. /app/ClientApp/
 
-
-# RUN dotnet tool install --global dotnet-ef
-# WORKDIR /source/Warehouse/Warehouse
-# RUN dotnet ef migrations add InitialCreate
-# RUN dotnet ef database update InitialCreate
-
-
 # final stage/image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app

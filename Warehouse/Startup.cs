@@ -39,18 +39,24 @@ namespace Warehouse
             "User Id=postgres;" + "Password=mysecretpassword;" + $"Database=postgres;";
             services.AddDbContext<WarehouseContext>(o => o.UseNpgsql(postgresconnstr));*/
 
-            services.AddDbContext<WarehouseContext>(o => o.UseMySql("Server=nagyhfmysql.westeurope.azurecontainer.io;port=3306;Database=ef;User=root;Password=password;"));
+            //services.AddDbContext<WarehouseContext>(o => o.UseMySql("Server=nagyhfmysql.westeurope.azurecontainer.io;" +
+            //    "port=3306;Database=ef;User=root;Password=password;"));
 
 
-            services.AddScoped(typeof(IStorageService), typeof(StorageService));
-            services.AddScoped(typeof(IUserService), typeof(UserService));
-            services.AddScoped(typeof(ILogService), typeof(LogService));
-            services.AddScoped(typeof(ITemperatureService), typeof(TcpTemperatureService));
+            services.AddDbContext<WarehouseContext>(o => o.UseMySql("Server=localhost;" +
+                "port=3306;Database=ef;User=root;Password=password;"));
+
+
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Warehouse", Version = "v1" });
             });
+
+            services.AddScoped(typeof(IStorageService), typeof(StorageService));
+            services.AddScoped(typeof(IUserService), typeof(UserService));
+            services.AddScoped(typeof(ILogService), typeof(LogService));
+            services.AddScoped(typeof(ITemperatureService), typeof(TcpTemperatureService));
 
             services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
@@ -180,7 +186,8 @@ namespace Warehouse
         {
             if (context.Database.GetPendingMigrations().Any())
             {
-                context.Database.Migrate();
+                try { context.Database.Migrate(); }
+                catch { }
             }
         }
 
